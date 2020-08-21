@@ -1,4 +1,4 @@
-import { Resolver, Query, Ctx, Arg, Int } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Int, Mutation } from 'type-graphql';
 import { Post } from '../entities/Post';
 import { MyContext } from 'src/types';
 
@@ -15,5 +15,15 @@ export class PostResolver {
     @Ctx() { em }: MyContext): Promise<Post | null>
   {
     return em.findOne(Post, { id });
+  }
+
+  @Mutation(() => Post, { nullable: true })
+  async createPost(
+    @Arg('title', () => String) title: string,
+    @Ctx() { em }: MyContext): Promise<Post>
+  {
+    const post = em.create(Post, { title });
+    await em.persistAndFlush(post);
+    return post;
   }
 }
