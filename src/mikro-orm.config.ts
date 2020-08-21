@@ -10,7 +10,7 @@ export default {
   },
   entities: [Post],
   dbName: 'reddit',
-  user: 'posgres',
+  user: 'ronnie',
   password: '',
   type: 'postgresql',
   debug: !__prod__,
