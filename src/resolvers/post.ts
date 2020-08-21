@@ -43,4 +43,17 @@ export class PostResolver {
     }
     return post;
   }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async deletePost(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { em }: MyContext): Promise<boolean | null>
+  {
+    const post = await em.findOne(Post, { id });
+    if (!post) {
+      return null;
+    }
+    await em.removeAndFlush(post);
+    return true;
+  }
 }
